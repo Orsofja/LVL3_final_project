@@ -27,17 +27,23 @@ def gen_markup(rows):
     markup.add(KeyboardButton(cancel_button))
     return markup
 
-attributes_of_projects = {'Имя пользователя' : ["Как к тебе обращаться?", "project_name"],
-                          "Ответ на 1 вопрос" : ["Какие у тебя хобби?", "description"],
-                          "Ответ на 2 вопрос" : ["", "url"],
-                          "Ответ на 3 вопрос" : ["", "status_id"]} #доработка
+attributes_of_projects = {'Имя пользователя' : ["Как к тебе обращаться?", "user_name"],
+                          "Ответ на 1 вопрос" : ["Какие у тебя хобби?", "question1"],
+                          "Ответ на 2 вопрос" : ["", "question2"],
+                          "Ответ на 3 вопрос" : ["", "question3"],
+                          "" : ["", ""],
+                          "" : ["", ""],
+                          "" : ["", ""]} #доработка
 
-def info_project(message, user_id, project_name): #доработка
+def info_project(message, user_id, project_name): 
     info = manager.get_project_info(user_id, project_name)[0]
-    bot.send_message(message.chat.id, f"""Project name: {info[0]}
-Description: {info[1]}
-Link: {info[2]}
-Status: {info[3]}
+    bot.send_message(message.chat.id, f"""User name: {info[0]}
+Question 1: {info[1]}
+Question 2: {info[2]}
+Question 3: {info[3]}
+Quiz 1: {info[4]}
+Quiz 2: {info[5]}
+Quiz 3: {info[6]}
 """)
 
 @bot.message_handler(commands=['start'])
@@ -72,12 +78,12 @@ def name_user(message):
 
 def save_answer1(message, data):
     data.append(message.text)
-    bot.send_message(message.chat.id, "Интересно! А скажешь, ?")
+    bot.send_message(message.chat.id, "Интересно! А скажешь, ?") #доработка
     bot.register_next_step_handler(message, save_answer2, data=data)
 
 def save_answer2(message, data):
     data.append(message.text)
-    bot.send_message(message.chat.id, "Ого! А как ты думаешь, ?")
+    bot.send_message(message.chat.id, "Ого! А как ты думаешь, ?") #доработка
     bot.register_next_step_handler(message, save_answer3, data=data)
 
 def save_answer3(message, data): 
@@ -113,7 +119,7 @@ def callback_quiz2(message, data, quiz2_answers):
     quiz2_id = manager.get_quiz2_id(quiz2_answers)
     data.append(quiz2_id)
     quiz3 = [x[0] for x in manager.get_quiz3()] 
-    bot.send_message(message.chat.id, "И на последок :", )
+    bot.send_message(message.chat.id, "И на последок :", ) #доработка
     bot.register_next_step_handler(message, callback_quiz3, data=data, quiz3=quiz3)
 
 def callback_quiz3(message, data, quiz2_answers): 
