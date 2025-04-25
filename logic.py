@@ -19,24 +19,24 @@ class DB_Manager:
                         question1 TEXT,
                         question2 TEXT,
                         question3 TEXT,
-                        quiz1 INTEGER,
-                        quiz2 INTEGER,
-                        quiz3 INTEGER,
-                        FOREIGN KEY(quiz1) REFERENCES quiz1(quiz1)
-                        FOREIGN KEY(quiz2) REFERENCES quiz2(quiz2)
-                        FOREIGN KEY(quiz3) REFERENCES quiz3(quiz3))
+                        quiz1_id INTEGER,
+                        quiz2_id INTEGER,
+                        quiz3_id INTEGER,
+                        FOREIGN KEY(quiz1_id) REFERENCES quiz1(quiz1_id)
+                        FOREIGN KEY(quiz2_id) REFERENCES quiz2(quiz2_id)
+                        FOREIGN KEY(quiz3_id) REFERENCES quiz3(quiz3_id))
                         """)
 
             conn.execute("""CREATE TABLE quiz1(
-                         quiz1 INTEGER PRIMARY KEY,
+                         quiz1_id INTEGER PRIMARY KEY,
                          quiz1_name TEXT )""")
 
             conn.execute("""CREATE TABLE quiz2(
-                         quiz2 INTEGER PRIMARY KEY,
+                         quiz2_id INTEGER PRIMARY KEY,
                          quiz2_name TEXT )""")
 
             conn.execute("""CREATE TABLE quiz3(
-                         quiz3 INTEGER PRIMARY KEY,
+                         quiz3_id INTEGER PRIMARY KEY,
                          quiz3_name TEXT )""")
             conn.commit()
 
@@ -66,7 +66,7 @@ class DB_Manager:
 
     def insert_result(self, data):
         sql = """INSERT INTO results
-        (user_id, user_name, question1, question2, question3, quiz1, quiz2, quiz3) 
+        (user_id, user_name, question1, question2, question3, quiz1_id, quiz2_id, quiz3_id) 
         values(?, ?, ?, ?)""" 
         self.__executemany(sql, data)
 
@@ -83,20 +83,20 @@ class DB_Manager:
         return self.__select_data(sql)
 
     def get_quiz1_id(self, quiz1_name):
-        sql = 'SELECT quiz1_id FROM status WHERE quiz1_name = ?'
+        sql = 'SELECT quiz1_id FROM quiz1 WHERE quiz1_name = ?'
         res = self.__select_data(sql, (quiz1_name,))
         if res: return res[0][0]
         else: return None
 
     def get_quiz2_id(self, quiz2_name):
-        sql = 'SELECT quiz2_id FROM status WHERE quiz2_name = ?'
+        sql = 'SELECT quiz2_id FROM quiz2 WHERE quiz2_name = ?'
         res = self.__select_data(sql, (quiz2_name,))
         if res: return res[0][0]
         else: return None
 
 
     def get_quiz3_id(self, quiz3_name):
-        sql = 'SELECT quiz3_id FROM status WHERE quiz3_name = ?'
+        sql = 'SELECT quiz3_id FROM quiz3 WHERE quiz3_name = ?'
         res = self.__select_data(sql, (quiz3_name,))
         if res: return res[0][0]
         else: return None
@@ -133,6 +133,8 @@ class DB_Manager:
         sql = """DELETE FROM results 
         WHERE user_id = ? AND result_id = ? """ 
         self.__executemany(sql, [(user_id, project_id)])
+
+#версия не доработана
 
 if __name__ == '__main__':
     manager = DB_Manager(DATABASE)
