@@ -1,9 +1,9 @@
 import sqlite3
 from config import DATABASE
 
-quiz1_answers = [ (_,) for _ in (['', '', '', ''])]
-quiz2_answers = [ (_,) for _ in (['', '', '', ''])]
-quiz3_answers = [ (_,) for _ in (['', '', '', ''])]
+quiz1_answers = [ (_,) for _ in (['13 - 25 лет', '25 - 40 лет', '40 - 55 лет', '55 +'])]
+quiz2_answers = [ (_,) for _ in (['С людьми', 'С идеями', 'С техникой', 'С данными'])]
+quiz3_answers = [ (_,) for _ in (['Да', 'Нет'])]
 
 class DB_Manager:
     def __init__(self, database):
@@ -22,10 +22,10 @@ class DB_Manager:
                         quiz1 INTEGER,
                         quiz2 INTEGER,
                         quiz3 INTEGER,
-                        FOREIGN KEY(quiz1) REFERENCES quiz1(quiz1))
-                        FOREIGN KEY(quiz2) REFERENCES quiz2(quiz2))
+                        FOREIGN KEY(quiz1) REFERENCES quiz1(quiz1)
+                        FOREIGN KEY(quiz2) REFERENCES quiz2(quiz2)
                         FOREIGN KEY(quiz3) REFERENCES quiz3(quiz3))
-                         """)
+                        """)
 
             conn.execute("""CREATE TABLE quiz1(
                          quiz1 INTEGER PRIMARY KEY,
@@ -35,7 +35,7 @@ class DB_Manager:
                          quiz2 INTEGER PRIMARY KEY,
                          quiz2_name TEXT )""")
 
-            conn.execute("""CREATE TABLE quiz2(
+            conn.execute("""CREATE TABLE quiz3(
                          quiz3 INTEGER PRIMARY KEY,
                          quiz3_name TEXT )""")
             conn.commit()
