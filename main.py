@@ -79,7 +79,7 @@ def name_user(message):
 
 def save_answer1(message, data):
     data.append(message.text)
-    bot.send_message(message.chat.id, "Интересно! А какие задачи тебе кажутся лёгкими, хотя другим они даются с трудом??") #доработка
+    bot.send_message(message.chat.id, "Интересно! А какие задачи тебе кажутся лёгкими, хотя другим они даются с трудом??") 
     bot.register_next_step_handler(message, save_answer2, data=data)
 
 def save_answer2(message, data):
@@ -93,46 +93,46 @@ def save_answer3(message, data):
     bot.send_message(message.chat.id, "Теперь выбери свою возрастную группу:", reply_markup=gen_markup(quiz1))
     bot.register_next_step_handler(message, callback_quiz1, data=data, quiz1=quiz1)
 
-def callback_quiz1(message, data, quiz1_answers): 
-    quiz1 = message.text
+def callback_quiz1(message, data, quiz1): 
+    quiz1_answ = message.text
     if message.text == cancel_button:
         no_results(message)
         return
-    if quiz1 not in quiz1_answers:
+    if quiz1_answ not in quiz1:
         bot.send_message(message.chat.id, "Ты выбрал ответ не из списка, попробуй еще раз!", reply_markup=gen_markup(quiz1))
         bot.register_next_step_handler(message, callback_quiz1, data=data, quiz1=quiz1)
         return
-    quiz1_id = manager.get_quiz1_id(quiz1_answers)
+    quiz1_id = manager.get_quiz1_id(quiz1_answ)
     data.append(quiz1_id)
     quiz2 = [x[0] for x in manager.get_quiz2()] 
-    bot.send_message(message.chat.id, "А ты больше любишь работать с людьми, с идеями, с техникой или с данными??", )
+    bot.send_message(message.chat.id, "А ты больше любишь работать с людьми, с идеями, с техникой или с данными?", reply_markup=gen_markup(quiz2))
     bot.register_next_step_handler(message, callback_quiz2, data=data, quiz2=quiz2)
 
-def callback_quiz2(message, data, quiz2_answers): 
-    quiz2 = message.text
+def callback_quiz2(message, data, quiz2): 
+    quiz2_answ = message.text
     if message.text == cancel_button:
         no_results(message)
         return
-    if quiz2 not in quiz2_answers:
+    if quiz2_answ not in quiz2:
         bot.send_message(message.chat.id, "Ты выбрал ответ не из списка, попробуй еще раз!", reply_markup=gen_markup(quiz2))
         bot.register_next_step_handler(message, callback_quiz2, data=data, quiz2=quiz2)
         return
-    quiz2_id = manager.get_quiz2_id(quiz2_answers)
+    quiz2_id = manager.get_quiz2_id(quiz2_answ)
     data.append(quiz2_id)
     quiz3 = [x[0] for x in manager.get_quiz3()] 
-    bot.send_message(message.chat.id, "И на последок, ты хочешь изменить что-то в мире или обществе своей профессией?")
+    bot.send_message(message.chat.id, "И на последок, ты хочешь изменить что-то в мире или обществе своей профессией?", reply_markup=gen_markup(quiz3))
     bot.register_next_step_handler(message, callback_quiz3, data=data, quiz3=quiz3)
 
-def callback_quiz3(message, data, quiz3_answers): 
-    quiz3 = message.text
+def callback_quiz3(message, data, quiz3): 
+    quiz3_answ = message.text
     if message.text == cancel_button:
         no_results(message)
         return
-    if quiz3 not in quiz3_answers:
+    if quiz3_answ not in quiz3:
         bot.send_message(message.chat.id, "Ты выбрал ответ не из списка, попробуй еще раз!", reply_markup=gen_markup(quiz3))
         bot.register_next_step_handler(message, callback_quiz3, data=data, quiz3=quiz3)
         return
-    quiz3_id = manager.get_quiz3_id(quiz3_answers)
+    quiz3_id = manager.get_quiz3_id(quiz3_answ)
     data.append(quiz3_id)
     manager.insert_result([tuple(data)])
     bot.send_message(message.chat.id, "Ваши результаты сохранены! Можете посмотреть их по комманде /results!")
